@@ -19,6 +19,7 @@ header > a{
     justify-content: space-between;
     padding: 4% 3% 0 3%;
     flex-wrap: wrap;
+    margin: 0 auto;
 }
 .iconoBuscar{
     width:20%
@@ -86,8 +87,15 @@ footer > .footer-redes > .container {
     justify-content: center;
     flex-wrap: wrap;
     padding: 2%;
+    margin-top: 10%;
     border:solid grey 1px;
  }
+ 
+.footer-description{
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
  .container-stats{
     width: 100%;
     display: flex;
@@ -110,5 +118,6 @@ footer > .footer-redes > .container {
     td{
         border: solid grey 1px;
         height: 1.6em;
+        width: 30%;
         
     }
