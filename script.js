@@ -91,7 +91,8 @@ const arrayCards = {
       price: 150,
     },
     {
-      image: "https://amazingeventsapi.herokuapp.com/api/img/Conciertodemusica2.jpg",
+      image:
+        "https://amazingeventsapi.herokuapp.com/api/img/Conciertodemusica2.jpg",
       name: "Electronic Fest",
       date: "2021-01-22",
       description:
@@ -164,7 +165,7 @@ const arrayCards = {
       name: "Avengers",
       date: "2022-10-15",
       description:
-        "Marvel's Avengers Premier in 3d, the start of an epic saga with your favourite superheroes.",
+      "Marvel's Avengers Premier in 3d, the start of an epic saga with your favourite superheroes.",
       category: "Cinema",
       place: "Room D1",
       capacity: 9000,
@@ -174,11 +175,41 @@ const arrayCards = {
   ],
 };
 
-const pintarDom = (arrayCards) => {
+const category = (arrayCards) => {
+  let opciones = document.getElementById("container-opc");
+  console.log(opciones.innerHTML);
+  let opcionesSinRepetidos = [];
+  for (let i = 0; i < arrayCards.eventos.length; i++) {
+    if(!opcionesSinRepetidos.includes(arrayCards.eventos[i].category)){
+      opcionesSinRepetidos.push(arrayCards.eventos[i].category);
+    }
+  }
+  for (let i = 0; i < opcionesSinRepetidos.length; i++) {
+    console.log(opciones)
+    opciones.innerHTML += `
+    <div class="form-check form-check-inline">
+    <input
+    class="form-check-input"
+    type="checkbox"
+    id="inlineCheckbox2"
+    value=${opcionesSinRepetidos[i]}
+    />
+    <label class="form-check-label" for="inlineCheckbox2"
+      >${opcionesSinRepetidos[i]}</label
+      >
+      </div>`;
+    }
+    console.log("Saliendo",opciones.innerHTML)
+  };
+  category(arrayCards);
+
+
+  
+  const pintarDom = (arrayCards) => {
   let cards = document.getElementById("cards");
   for (let i = 0; i < arrayCards.length; i++) {
-    cards.innerHTML+= `
-        <div class="card  col-xs-12 col-sm-4 col-md-5 col-lg-3 " style="width: 15rem;" >
+    cards.innerHTML += `
+    <div class="card  col-xs-12 col-sm-4 col-md-5 col-lg-3 " style="width: 15rem;" >
         <img src="${arrayCards[i].image}" alt="..." />
         <div class="card-body">
           <h5 class="card-title">${arrayCards[i].name}</h5>
@@ -192,4 +223,26 @@ const pintarDom = (arrayCards) => {
   }
 };
 
+const buscarInput = document.getElementById("buscarInput");
+const buscarBtn = document.getElementById("buscarBtn");
+const checkboxs = document.querySelectorAll(".form-check-input");
+buscarInput.addEventListener("keyup", () => {
+  let palabraClave = buscarInput.value;
+  let arrayFiltrado = arrayCards.eventos.filter((evento) => {
+    return evento.name.toLowerCase().includes(palabraClave.toLowerCase());
+  });
+  console.log(arrayFiltrado);
+  let cards = document.getElementById("cards");
+  cards.innerHTML = ``;
+  pintarDom(arrayFiltrado);
+});
+
+buscarBtn.addEventListener("click", () => {
+  checkboxs.forEach((checkbox) => {
+    if (checkbox.checked) {
+      console.log(checkbox);
+      }})
+
+
+});
 pintarDom(arrayCards.eventos);
