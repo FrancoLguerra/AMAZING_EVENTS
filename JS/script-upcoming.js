@@ -173,9 +173,37 @@ const arrayCards = {
       },
     ],
   };
+  const category = (arrayCards) => {
+    let opciones = document.getElementById("container-opc");
+    console.log(opciones.innerHTML);
+    let opcionesSinRepetidos = [];
+    for (let i = 0; i < arrayCards.eventos.length; i++) {
+      if(!opcionesSinRepetidos.includes(arrayCards.eventos[i].category)){
+        opcionesSinRepetidos.push(arrayCards.eventos[i].category);
+      }
+    }
+    for (let i = 0; i < opcionesSinRepetidos.length; i++) {
+      //console.log(opciones)
+      opciones.innerHTML += `
+      <div class="form-check form-check-inline">
+      <input
+      class="form-check-input"
+      type="checkbox"
+      id="inlineCheckbox2"
+      value=${opcionesSinRepetidos[i]}
+      />
+      <label class="form-check-label" for="inlineCheckbox2"
+        >${opcionesSinRepetidos[i]}</label
+        >
+        </div>`;
+      }
+     // console.log("Saliendo",opciones.innerHTML)
+    };
+    category(arrayCards);
   const fechaActual = Date.parse(arrayCards.fechaActual);
   const pintarDomUpcoming = (arrayCards) => {
     let cards = document.getElementById("cards");
+    cards.innerHTML = "";
   
     console.log(fechaActual);
     for (let i = 0; i < arrayCards.length; i++) {
@@ -194,5 +222,74 @@ const arrayCards = {
         </div>`;
     }}
   };
+
+  const buscarInput = document.getElementById("buscarInput");
+const buscarBtn = document.getElementById("buscarBtn");
+const checkboxs = document.querySelectorAll(".form-check-input");
+//buscarInput.addEventListener("keyup", () => {
+const buscarXInput = () => {
+  let palabraClave = buscarInput.value;
+  let arrayFiltrado = [];
+  if (palabraClave.length > 0) {
+  arrayFiltrado = arrayCards.eventos.filter((evento) => {
+    return evento.name.toLowerCase().includes(palabraClave.toLowerCase());
+  })};
+  return arrayFiltrado;
+  console.log(arrayFiltrado);
+  //let cards = document.getElementById("cards");
+ // cards.innerHTML = ``;
+  //pintarDom(arrayFiltrado);
+};
+
+buscarBtn.addEventListener("click", () => {
+  console.log("se hizo clic en btn buscar");
+  let arrayFiltradoXPalabra = [];
+  let categoriasSeleccionadas = [];
+  let arrayFiltradoXCheckbox = [];
+  console.log("se crearon arrays vacios");
+  checkboxs.forEach((checkbox) => {
+    console.log("entra al forEach");
+    if (checkbox.checked === true) {
+      categoriasSeleccionadas.push(checkbox.value);}});
+
+      console.log("entra al if checked = true");
+      if(categoriasSeleccionadas.length > 0){
+
+      arrayFiltradoXPalabra = buscarXInput();
+
+      console.log(arrayFiltradoXPalabra);
+      if(arrayFiltradoXPalabra.length > 0){
+        categoriasSeleccionadas.forEach((categoria) => {
+          arrayFiltradoXCheckbox = arrayFiltradoXPalabra.filter((evento) => {
+            return evento.category.trim() === categoria.trim();
+          });
+        });
+      }
+      
+      
+      else if(arrayFiltradoXPalabra.length <= 0){
+        console.log("entra al else arrayFiltradoXPalabra.length > 0");
+       categoriasSeleccionadas.forEach((categoria) => {
+        arrayFiltradoXCheckbox = arrayCards.eventos.filter((evento) => {
+          return evento.category.includes(categoria);
+        });
+        
+      });
+console.log(arrayFiltradoXCheckbox);
+      
+      }
+      
+    }
+    else if(categoriasSeleccionadas.length <= 0){
+      arrayFiltradoXPalabra = buscarXInput();
+      if(arrayFiltradoXPalabra){
+        arrayFiltradoXCheckbox = arrayFiltradoXPalabra;
+  
+  
+      }
+  
+    }
+    pintarDomUpcoming(arrayFiltradoXCheckbox);
+  } );
   
   pintarDomUpcoming(arrayCards.eventos);
